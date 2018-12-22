@@ -3,11 +3,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>pacemaker</groupId>
-  <artifactId>pacemaker-skeleton</artifactId>
+      <name>pacemaker-skeleton-client</name>
+    <artifactId>pacemaker-skeleton-client</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>pacemaker-skeleton</name>
+  
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -30,21 +31,21 @@
   </build>
 
   <dependencies>
-    <dependency>
-      <groupId>io.javalin</groupId>
-      <artifactId>javalin</artifactId>
-       <version>2.4.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.7.25</version>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.9.5</version>
-    </dependency>
+  <dependency>
+    <groupId>com.squareup.retrofit2</groupId>
+    <artifactId>retrofit</artifactId>
+    <version>2.4.0</version>
+  </dependency>
+  <dependency>
+    <groupId>com.squareup.retrofit2</groupId>
+    <artifactId>converter-gson</artifactId>
+    <version>2.4.0</version>
+  </dependency>
+  <dependency>
+    <groupId>com.google.code.gson</groupId>
+    <artifactId>gson</artifactId>
+    <version>2.8.5</version>
+  </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
