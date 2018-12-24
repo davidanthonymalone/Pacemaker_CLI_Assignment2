@@ -60,6 +60,8 @@ public class PacemakerConsoleService {
     console.println("ok");
     loggedInUser = null;
   }
+  
+  
 
   @Command(description = "Add activity: create and add an activity for the logged in user")
   public void addActivity(
@@ -86,11 +88,10 @@ public class PacemakerConsoleService {
 
   @Command(description = "Add location: Append location to an activity")
   public void addLocation(@Param(name = "activity-id") String id,
-      @Param(name = "longitude") double longitude,
-      @Param(name = "latitude") double latitude) {
-    Optional<Activity> activity = Optional.fromNullable(paceApi.getActivity(id));
+      @Param(name = "longitude") double longitude, @Param(name = "latitude") double latitude) {
+    Optional<Activity> activity = Optional.fromNullable(paceApi.getActivity(loggedInUser.getId(), id));
     if (activity.isPresent()) {
-      paceApi.addLocation(activity.get().id, latitude, longitude);
+      paceApi.addLocation(loggedInUser.getId(), activity.get().id, latitude, longitude);
       console.println("ok");
     } else {
       console.println("not found");
@@ -130,9 +131,10 @@ public class PacemakerConsoleService {
 
   @Command(description = "List all locations for a specific activity")
   public void listActivityLocations(@Param(name = "activity-id") String id) {
-    Optional<Activity> activity = Optional.fromNullable(paceApi.getActivity(id));
+
+    Optional<Activity> activity = Optional.fromNullable(paceApi.getActivity(loggedInUser.getId(), id));
     if (activity.isPresent()) {
-     // console.renderLocations(activity.get().route);
+      // console.renderLocations(activity.get().route);
     }
   }
 

@@ -11,6 +11,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -27,6 +28,21 @@ interface PacemakerInterface
 
     @POST("/users/{id}/activities")
     Call<Activity> addActivity(@Path("id") String id, @Body Activity activity);
+    @GET("/users/{id}/activities/{activityId}")
+    Call<Activity> getActivity(@Path("id") String id, @Path("activityId") String activityId);  
+    
+    @POST("/users/{id}/activities/{activityId}/locations")
+    Call<Location> addLocation(@Path("id") String id, @Path("activityId") String activityId, @Body Location location);
+    @DELETE("/users")
+    Call<User> deleteUsers();
+
+    @DELETE("/users/{id}")
+    Call<User> deleteUser(@Path("id") String id);
+    @DELETE("/users/{id}/activities")
+    Call<String> deleteActivities(@Path("id") String id);
+
+    @GET("/users/{id}")
+    Call<User> getUser(@Path("id") String id);
     
 }
 
@@ -53,8 +69,6 @@ public class PacemakerAPI {
         return users;
       }
 
-    public void deleteUsers() {
-    }
 
     public User createUser(String firstName, String lastName, String email, String password) {
         User returnedUser = null;
@@ -74,6 +88,15 @@ public class PacemakerAPI {
         return null;
     }
 
+    
+    public void deleteActivities(String id) {
+        try {
+          Call<String> call = pacemakerInterface.deleteActivities(id);
+          call.execute();
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+        }
+      }
 
 
     public Activity createActivity(String id, String type, String location, double distance) {
@@ -88,8 +111,18 @@ public class PacemakerAPI {
         return returnedActivity;
       }
 
-      //...
-
+    public Activity getActivity(String userId, String activityId) {
+    	   Activity activity = null;
+    	    try {
+    	      Call<Activity> call = pacemakerInterface.getActivity(userId, activityId);
+    	      Response<Activity> response = call.execute();
+    	      activity = response.body();
+    	    } catch (Exception e) {
+    	      System.out.println(e.getMessage());
+    	    }
+    	    return activity;
+    	  }
+    
       public Collection<Activity> getActivities(String id) {
         Collection<Activity> activities = null;
         try {
@@ -107,8 +140,14 @@ public class PacemakerAPI {
         return null;
     }
 
-    public void addLocation(String id, double latitude, double longitude) {
-    }
+    public void addLocation(String id, String activityId, double latitude, double longitude) {
+        try {
+          Call<Location> call = pacemakerInterface.addLocation(id, activityId, new Location(latitude, longitude));
+          call.execute();
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+        }
+      }
 
     public User getUserByEmail(String email) {
         Collection<User> users = getUsers();
@@ -122,10 +161,35 @@ public class PacemakerAPI {
       }
 
     public User getUser(String id) {
-        return null;
-    }
+        User user = null;
+        try {
+          Call<User> call = pacemakerInterface.getUser(id);
+          Response<User> response = call.execute();
+          user = response.body();
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+        }
+        return user;
+      }
 
-    public User deleteUser(String id) {
-        return null;
-    }
+      public void deleteUsers() {
+        try {
+          Call<User> call = pacemakerInterface.deleteUsers();
+          call.execute();
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+        }
+      }
+
+      public User deleteUser(String id) {
+        User user = null;
+        try {
+          Call<User> call = pacemakerInterface.deleteUser(id);
+          Response<User> response = call.execute();
+          user = response.body();
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+        }
+        return user;
+      }
 }
