@@ -28,7 +28,7 @@ public class Parser {
     System.out.println(activities.toString());
   }
 
-  public void renderLocations(List<Location> locations) {
-    System.out.println(locations.toString());
+  public void renderLocations(String location) {
+    System.out.println(location.toString());
   }
 }

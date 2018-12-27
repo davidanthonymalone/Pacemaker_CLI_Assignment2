@@ -18,14 +18,14 @@ import parsers.Parser;
 
 public class PacemakerConsoleService {
 
- private PacemakerAPI paceApi = new PacemakerAPI("http://localhost:7000");
+ private PacemakerAPI paceApi = new PacemakerAPI("https://shrouded-oasis-60771.herokuapp.com/");
   private Parser console = new AsciiTableParser();
   private User loggedInUser = null;
 
   public PacemakerConsoleService() {
   }
 
-  // Starter Commands
+  // Starter Command
 
   @Command(description = "Register: Create an account for a new user")
   public void register(@Param(name = "first name") String firstName,
@@ -47,7 +47,7 @@ public class PacemakerConsoleService {
       if (user.get().password.equals(password)) {
         loggedInUser = user.get();
         console.println("Logged in " + loggedInUser.email);
-        console.println("ok");
+        console.println("You are now Logged in");
       } else {
         console.println("Error on login");
       }
@@ -57,7 +57,7 @@ public class PacemakerConsoleService {
   @Command(description = "Logout: Logout current user")
   public void logout() {
     console.println("Logging out " + loggedInUser.email);
-    console.println("ok");
+    console.println("You have successfully logged out");
     loggedInUser = null;
   }
   
@@ -92,14 +92,13 @@ public class PacemakerConsoleService {
     Optional<Activity> activity = Optional.fromNullable(paceApi.getActivity(loggedInUser.getId(), id));
     if (activity.isPresent()) {
       paceApi.addLocation(loggedInUser.getId(), activity.get().id, latitude, longitude);
-      console.println("ok");
+      console.println("Location Added");
     } else {
       console.println("not found");
     }
   }
   
   
-
   @Command(description = "ActivityReport: List all activities for logged in user, sorted alphabetically by type")
   public void activityReport() {
     Optional<User> user = Optional.fromNullable(loggedInUser);
@@ -134,12 +133,24 @@ public class PacemakerConsoleService {
 
     Optional<Activity> activity = Optional.fromNullable(paceApi.getActivity(loggedInUser.getId(), id));
     if (activity.isPresent()) {
-      // console.renderLocations(activity.get().route);
+     //  console.renderLocations(activity.getLocation());
+    	console.renderLocations(activity.get().location);
     }
   }
 
   @Command(description = "Follow Friend: Follow a specific friend")
   public void follow(@Param(name = "email") String email) {
+	  Optional<User> user = Optional.fromNullable(paceApi.getUserByEmail(email));
+	  if (user.isPresent()) {
+	      paceApi.followFriend(user.get().id,user.get().email);
+	      console.println("Friend Followed");
+	    } else {
+	      console.println("not found");
+	    }
+	  
+	  
+	  
+	 
   }
 
   @Command(description = "List Friends: List all of the friends of the logged in user")

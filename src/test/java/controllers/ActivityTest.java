@@ -4,15 +4,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import models.Activity;
+import models.Location;
 import models.User;
-
+import models.Location;
+import java.util.List;
 public class ActivityTest {
 
-  PacemakerAPI pacemaker = new PacemakerAPI("http://localhost:7000");
+  PacemakerAPI pacemaker = new PacemakerAPI("https://shrouded-oasis-60771.herokuapp.com/");
   User homer = new User("homer", "simpson", "homer@simpson.com", "secret");
 
   @Before
@@ -36,6 +40,33 @@ public class ActivityTest {
     assertNotNull(returnedActivity.id);
   }
   
+
+  
+  @Test
+  public void testCreateActivityWithSingleLocation() {
+    pacemaker.deleteActivities(homer.id);
+    Activity activity = new Activity("walk", "shop", 2.5);
+    Location location = new Location(12.0, 33.0);
+
+    Activity returnedActivity = pacemaker.createActivity(homer.id, activity.type, activity.location, activity.distance);
+    pacemaker.addLocation(homer.id, returnedActivity.id, location.latitude, location.longitude);
+
+    List<Location> locations = pacemaker.getLocations(homer.id, returnedActivity.id);
+    assertEquals (locations.size(), 1);
+    assertEquals (locations.get(0), location);
+  }
+  
+//  @Test
+//  public void testCreateActivityWithMultipleLocation() {
+//    pacemaker.deleteActivities(homer.id);
+//    Activity activity = new Activity("walk", "shop", 2.5);
+//    Activity returnedActivity = pacemaker.createActivity(homer.id, activity.type, activity.location, activity.distance);
+//
+//    locations.forEach (location ->  pacemaker.addLocation(homer.id, returnedActivity.id, location.latitude, location.longitude));
+//    List<Location> returnedLocations = pacemaker.getLocations(homer.id, returnedActivity.id);
+//    assertEquals (locations.size(), returnedLocations.size());
+//    assertEquals(locations, returnedLocations);
+//  }
   
   @Test
   public void testGetActivity() {

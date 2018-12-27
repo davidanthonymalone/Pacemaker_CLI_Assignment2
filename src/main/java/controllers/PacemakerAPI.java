@@ -2,9 +2,12 @@ package controllers;
 
 import java.util.Collection;
 import java.util.List;
+
+import com.google.common.base.Optional;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import models.Activity;
+import models.Friend;
 import models.Location;
 import models.User;
 import retrofit2.Call;
@@ -21,28 +24,43 @@ interface PacemakerInterface
 {
     @GET("/users")
     Call<List<User>> getUsers();
+    
+    
     @POST("/users")
     Call<User> registerUser(@Body User User);
+    
     @GET("/users/{id}/activities")
     Call<List<Activity>> getActivities(@Path("id") String id);
 
     @POST("/users/{id}/activities")
     Call<Activity> addActivity(@Path("id") String id, @Body Activity activity);
+    
     @GET("/users/{id}/activities/{activityId}")
     Call<Activity> getActivity(@Path("id") String id, @Path("activityId") String activityId);  
     
     @POST("/users/{id}/activities/{activityId}/locations")
     Call<Location> addLocation(@Path("id") String id, @Path("activityId") String activityId, @Body Location location);
+    
+    
     @DELETE("/users")
     Call<User> deleteUsers();
 
     @DELETE("/users/{id}")
     Call<User> deleteUser(@Path("id") String id);
+    
     @DELETE("/users/{id}/activities")
     Call<String> deleteActivities(@Path("id") String id);
 
     @GET("/users/{id}")
     Call<User> getUser(@Path("id") String id);
+    
+    @GET("/users/{id}/activities/{activityId}/locations")
+    Call<List<Location>> getLocations(@Path("id") String id, @Path("activityId") String activityId);
+    
+    
+    @POST("/users/{id}/friends")
+    Call<Friend> followFriend(@Path("email") String email);
+    
     
 }
 
@@ -82,7 +100,17 @@ public class PacemakerAPI {
         return returnedUser;
       }
 
-
+    public List<Location> getLocations(String id, String activityId) {
+        List<Location> locations = null;
+        try {
+          Call<List<Location>> call = pacemakerInterface.getLocations(id, activityId);
+          Response<List<Location>> response = call.execute();
+          locations = response.body();
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+        }
+        return locations;
+      }
 
     public Activity getActivity(String id) {
         return null;
@@ -110,6 +138,8 @@ public class PacemakerAPI {
         }
         return returnedActivity;
       }
+    
+    
 
     public Activity getActivity(String userId, String activityId) {
     	   Activity activity = null;
@@ -122,6 +152,8 @@ public class PacemakerAPI {
     	    }
     	    return activity;
     	  }
+    
+   
     
       public Collection<Activity> getActivities(String id) {
         Collection<Activity> activities = null;
@@ -136,13 +168,31 @@ public class PacemakerAPI {
       }
     
     
-    public List<Activity> listActivities(String userId, String sortBy) {
-        return null;
+    public Collection<Activity> listActivities(String userId, String sortBy) {
+    	 Collection<Activity> activities = null;
+         try {
+           Call<List<Activity>> call = pacemakerInterface.getActivities(userId);
+           Response<List<Activity>> response = call.execute();
+           activities = response.body();
+         } catch (Exception e) {
+           System.out.println(e.getMessage());
+         }
+         ((List<Activity>) activities).sort((Activity a1, Activity a2) -> a1.getType().compareTo(a2.getType()));
+         return activities;
     }
 
     public void addLocation(String id, String activityId, double latitude, double longitude) {
         try {
           Call<Location> call = pacemakerInterface.addLocation(id, activityId, new Location(latitude, longitude));
+          call.execute();
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+        }
+      }
+    
+    public void followFriend(String id, String email) {
+        try {
+          Call<Friend> call = pacemakerInterface.followFriend(email);
           call.execute();
         } catch (Exception e) {
           System.out.println(e.getMessage());
