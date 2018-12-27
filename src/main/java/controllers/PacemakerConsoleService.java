@@ -87,8 +87,7 @@ public class PacemakerConsoleService {
   // Baseline Commands
 
   @Command(description = "Add location: Append location to an activity")
-  public void addLocation(@Param(name = "activity-id") String id,
-      @Param(name = "longitude") double longitude, @Param(name = "latitude") double latitude) {
+  public void addLocation(@Param(name = "activity-id") String id,@Param(name = "longitude") double longitude, @Param(name = "latitude") double latitude) {
     Optional<Activity> activity = Optional.fromNullable(paceApi.getActivity(loggedInUser.getId(), id));
     if (activity.isPresent()) {
       paceApi.addLocation(loggedInUser.getId(), activity.get().id, latitude, longitude);
@@ -142,7 +141,7 @@ public class PacemakerConsoleService {
   public void follow(@Param(name = "email") String email) {
 	  Optional<User> user = Optional.fromNullable(paceApi.getUserByEmail(email));
 	  if (user.isPresent()) {
-	      paceApi.followFriend(user.get().id,user.get().email);
+	      paceApi.addFriend(loggedInUser.getId(),user.get().email);
 	      console.println("Friend Followed");
 	    } else {
 	      console.println("not found");
@@ -155,6 +154,10 @@ public class PacemakerConsoleService {
 
   @Command(description = "List Friends: List all of the friends of the logged in user")
   public void listFriends() {
+	  Optional<User> user = Optional.fromNullable(loggedInUser);
+	    if (user.isPresent()) {
+	     // console.renderFriends(user);
+	    }
   }
 
   @Command(description = "Friend Activity Report: List all activities of specific friend, sorted alphabetically by type)")

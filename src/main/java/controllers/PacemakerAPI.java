@@ -38,8 +38,7 @@ interface PacemakerInterface
     @GET("/users/{id}/activities/{activityId}")
     Call<Activity> getActivity(@Path("id") String id, @Path("activityId") String activityId);  
     
-    @POST("/users/{id}/activities/{activityId}/locations")
-    Call<Location> addLocation(@Path("id") String id, @Path("activityId") String activityId, @Body Location location);
+    
     
     
     @DELETE("/users")
@@ -58,8 +57,12 @@ interface PacemakerInterface
     Call<List<Location>> getLocations(@Path("id") String id, @Path("activityId") String activityId);
     
     
-    @POST("/users/{id}/friends")
-    Call<Friend> followFriend(@Path("email") String email);
+    @POST("/users/{userid}/friends/")
+    Call<Friend> addFriend(@Path("userid") String userid, @Body Friend friend);
+    
+    
+    @POST("/users/{id}/activities/{activityId}/locations")
+    Call<Location> addLocation(@Path("id") String id, @Path("activityId") String activityId, @Body Location location);
     
     
 }
@@ -140,6 +143,8 @@ public class PacemakerAPI {
       }
     
     
+ 
+    
 
     public Activity getActivity(String userId, String activityId) {
     	   Activity activity = null;
@@ -190,14 +195,18 @@ public class PacemakerAPI {
         }
       }
     
-    public void followFriend(String id, String email) {
+    
+    public void addFriend(String id, String email) {
         try {
-          Call<Friend> call = pacemakerInterface.followFriend(email);
+          Call<Friend> call = pacemakerInterface.addFriend(id,new Friend(id, email));
           call.execute();
         } catch (Exception e) {
           System.out.println(e.getMessage());
         }
       }
+    
+
+// 
 
     public User getUserByEmail(String email) {
         Collection<User> users = getUsers();

@@ -31,4 +31,7 @@ public class Parser {
   public void renderLocations(String location) {
     System.out.println(location.toString());
   }
+  public void renderFriends(String friend) {
+	    System.out.println(friend.toString());
+	  }
 }
