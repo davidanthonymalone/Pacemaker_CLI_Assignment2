@@ -14,10 +14,12 @@ import models.User;
 
 public class Parser {
 
-  public void println(String s) {
-    System.out.println(s);
+  public void printlns(List<Friend> friends) {
+    System.out.println(friends);
   }
-
+  public void println(String s) {
+	    System.out.println(s);
+	  }
   public void renderUser(User user) {
     System.out.println(user.toString());
   }
@@ -33,6 +35,8 @@ public class Parser {
   public void renderActivities(Collection<Activity> activities) {
     System.out.println(activities.toString());
   }
+  
+  
 
   public void renderFriends(Collection<Friend> friends) {
 	  

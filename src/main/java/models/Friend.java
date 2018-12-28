@@ -82,6 +82,7 @@ public class Friend implements Serializable {
 	public String toString() {
 		 return toStringHelper(this)
 			        .addValue(email)
+			        .addValue(friendUserID)
 			        .toString();
 	}
 

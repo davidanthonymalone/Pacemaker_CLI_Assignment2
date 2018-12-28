@@ -9,12 +9,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import models.Activity;
+import models.Friend;
 import models.User;
 import parsers.AsciiTableParser;
 import parsers.Parser;
+import retrofit2.Call;
 
 public class PacemakerConsoleService {
 
@@ -139,14 +142,29 @@ public class PacemakerConsoleService {
 
   @Command(description = "Follow Friend: Follow a specific friend")
   public void follow(@Param(name = "email") String email) {
+
+	  Optional<User> lUser = Optional.fromNullable(loggedInUser);
 	  Optional<User> user = Optional.fromNullable(paceApi.getUserByEmail(email));
-	  if (user.isPresent()) {
-	      paceApi.addFriend(loggedInUser.getId(),user.get().email,user.get().id);
-	      console.println("You have followed " + user.get().email);
-	    } else {
-	      console.println("not found");
-	    }
 	  
+	  List<Friend> friends = (List<Friend>) paceApi.getFriends(lUser.get().id);
+	  Friend reportFriend = new Friend();
+	  List<Friend> followedfriends = new ArrayList<Friend>();
+	  for (Friend friend : friends) {
+	        if (friend.getEmail().equals(email)) {
+	        	console.println("friend already followed");
+	        }else {
+	        	paceApi.addFriend(loggedInUser.getId(),user.get().email,user.get().id);
+	  	      console.println("You have followed " + user.get().email);
+	        	
+	        }
+	      
+	        	
+	    
+	    
+	     
+
+	        }
+	 
 	  
 	  
 	 
@@ -155,14 +173,42 @@ public class PacemakerConsoleService {
   @Command(description = "List Friends: List all of the friends of the logged in user")
   public void listFriends() {
 	  Optional<User> user = Optional.fromNullable(loggedInUser);
+	 
 	    if (user.isPresent()) {
+	    
 	      console.renderFriends(paceApi.getFriends(user.get().id));
+	    }else {
+	    	console.println("User does not exist");
+	    	
+	    	
 	    }
   }
 
   @Command(description = "Friend Activity Report: List all activities of specific friend, sorted alphabetically by type)")
   public void friendActivityReport(@Param(name = "email") String email) {
-  }
+	  Optional<User> lUser = Optional.fromNullable(loggedInUser);
+	  Optional<User> user = Optional.fromNullable(paceApi.getUserByEmail(email));
+	  
+	  List<Friend> friends = (List<Friend>) paceApi.getFriends(lUser.get().id);
+	  Friend reportFriend = new Friend();
+	  List<Friend> followedfriends = new ArrayList<Friend>();
+	  for (Friend friend : friends) {
+	        if (friend.getEmail().equals(email)) {
+	        	reportFriend = friend;
+	            Optional<User> user2 = Optional.fromNullable(paceApi.getUser(reportFriend.getFriendUserID()));
+		        console.renderActivities(paceApi.getActivities(user2.get().id));
+	        }
+	      
+	        	
+	    
+	    
+	     
+
+	        }}
+	  
+	 
+	 
+  
 
   // Good Commands
 
