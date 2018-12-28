@@ -25,7 +25,6 @@ interface PacemakerInterface
     @GET("/users")
     Call<List<User>> getUsers();
     
-    
     @POST("/users")
     Call<User> registerUser(@Body User User);
     
@@ -53,12 +52,17 @@ interface PacemakerInterface
     @GET("/users/{id}")
     Call<User> getUser(@Path("id") String id);
     
+    
+    
     @GET("/users/{id}/activities/{activityId}/locations")
     Call<List<Location>> getLocations(@Path("id") String id, @Path("activityId") String activityId);
     
     
     @POST("/users/{userid}/friends/")
     Call<Friend> addFriend(@Path("userid") String userid, @Body Friend friend);
+    
+    @GET("/users/{id}/friends/")
+    Call<List<Friend>> getFriends(@Path("id") String id);
     
     
     @POST("/users/{id}/activities/{activityId}/locations")
@@ -115,9 +119,9 @@ public class PacemakerAPI {
         return locations;
       }
 
-    public Activity getActivity(String id) {
-        return null;
-    }
+    
+ 
+
 
     
     public void deleteActivities(String id) {
@@ -172,6 +176,18 @@ public class PacemakerAPI {
         return activities;
       }
     
+      
+      public Collection<Friend> getFriends(String id) {
+          Collection<Friend> friends = null;
+          try {
+            Call<List<Friend>> call = pacemakerInterface.getFriends(id);
+            Response<List<Friend>> response = call.execute();
+            friends = response.body();
+          } catch (Exception e) {
+            System.out.println(e.getMessage());
+          }
+          return friends;
+        }
     
     public Collection<Activity> listActivities(String userId, String sortBy) {
     	 Collection<Activity> activities = null;
@@ -196,9 +212,9 @@ public class PacemakerAPI {
       }
     
     
-    public void addFriend(String id, String email) {
+    public void addFriend(String id, String email,String friendUserID) {
         try {
-          Call<Friend> call = pacemakerInterface.addFriend(id,new Friend(id, email));
+          Call<Friend> call = pacemakerInterface.addFriend(id,new Friend(id, email,friendUserID));
           call.execute();
         } catch (Exception e) {
           System.out.println(e.getMessage());

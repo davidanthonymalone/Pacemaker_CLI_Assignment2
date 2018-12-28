@@ -2,7 +2,13 @@ package parsers;
 
 import java.util.Collection;
 import java.util.List;
+
+import com.bethecoder.ascii_table.ASCIITable;
+import com.bethecoder.ascii_table.impl.CollectionASCIITableAware;
+import com.bethecoder.ascii_table.spec.IASCIITableAware;
+
 import models.Activity;
+import models.Friend;
 import models.Location;
 import models.User;
 
@@ -28,10 +34,16 @@ public class Parser {
     System.out.println(activities.toString());
   }
 
-  public void renderLocations(String location) {
-    System.out.println(location.toString());
+  public void renderFriends(Collection<Friend> friends) {
+	  
+	      
+	    System.out.println(friends.toString());
+	  }
+  
+  public void renderLocations(Activity a) {
+	  System.out.println(a.toString());
   }
-  public void renderFriends(String friend) {
-	    System.out.println(friend.toString());
+  public void renderFriends(Friend friend) {
+	    System.out.println(friend.getEmail());
 	  }
 }

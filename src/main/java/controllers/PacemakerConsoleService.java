@@ -133,7 +133,7 @@ public class PacemakerConsoleService {
     Optional<Activity> activity = Optional.fromNullable(paceApi.getActivity(loggedInUser.getId(), id));
     if (activity.isPresent()) {
      //  console.renderLocations(activity.getLocation());
-    	console.renderLocations(activity.get().location);
+    	
     }
   }
 
@@ -141,8 +141,8 @@ public class PacemakerConsoleService {
   public void follow(@Param(name = "email") String email) {
 	  Optional<User> user = Optional.fromNullable(paceApi.getUserByEmail(email));
 	  if (user.isPresent()) {
-	      paceApi.addFriend(loggedInUser.getId(),user.get().email);
-	      console.println("Friend Followed");
+	      paceApi.addFriend(loggedInUser.getId(),user.get().email,user.get().id);
+	      console.println("You have followed " + user.get().email);
 	    } else {
 	      console.println("not found");
 	    }
@@ -156,7 +156,7 @@ public class PacemakerConsoleService {
   public void listFriends() {
 	  Optional<User> user = Optional.fromNullable(loggedInUser);
 	    if (user.isPresent()) {
-	     // console.renderFriends(user);
+	      console.renderFriends(paceApi.getFriends(user.get().id));
 	    }
   }
 

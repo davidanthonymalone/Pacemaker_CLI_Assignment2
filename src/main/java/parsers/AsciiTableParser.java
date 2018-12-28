@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import models.Activity;
+import models.Friend;
 import models.Location;
 import models.User;
 
@@ -52,7 +53,7 @@ public class AsciiTableParser extends Parser {
         List<Activity> activityList = new ArrayList(activities);
         IASCIITableAware asciiTableAware = new CollectionASCIITableAware<Activity>(activityList,
             "id",
-            "type", "location", "distance", "starttime", "duration");
+            "type", "location", "distance");
         System.out.println(ASCIITable.getInstance().getTable(asciiTableAware));
       }
       System.out.println("ok");
@@ -61,6 +62,18 @@ public class AsciiTableParser extends Parser {
     }
   }
 
+  public void renderFriends(Collection<Friend> friends) {
+	    if (friends != null) {
+	      if (!friends.isEmpty()) {
+	        List<Friend> friendsList = new ArrayList(friends);
+	        IASCIITableAware asciiTableAware = new CollectionASCIITableAware<Friend>(friendsList,"Email");
+	        System.out.println(ASCIITable.getInstance().getTable(asciiTableAware));
+	      }
+	      System.out.println("ok");
+	    } else {
+	      System.out.println("not found");
+	    }
+	  }
   public void renderLocations(List<Location> locations) {
     if (locations != null) {
       if (!locations.isEmpty()) {

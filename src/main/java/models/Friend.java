@@ -10,11 +10,26 @@ import com.google.common.base.Objects;
 public class Friend implements Serializable {
 	  public String id;
 	  public String email;
+	  public String friendUserID;
 	
 	  
 	  
 
-	  public Friend() {
+	  public String getFriendUserID() {
+		return friendUserID;
+	}
+
+
+
+
+	public void setFriendUserID(String friendUserID) {
+		this.friendUserID = friendUserID;
+	}
+
+
+
+
+	public Friend() {
 	  }
 
 
@@ -46,9 +61,10 @@ public class Friend implements Serializable {
 	}
 
 
-	  public Friend(String email, String id) {
-	    this.id = id;
-	    this.email = email;
+	  public Friend(String email, String id, String friendUserID) {
+		  this.id = email;
+		    this.email = id;
+		    this.friendUserID = friendUserID;
 	  }
 
 
@@ -56,7 +72,7 @@ public class Friend implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(this.id,this.email);
+		return Objects.hashCode(this.id,this.email,this.friendUserID);
 	}
 
 
@@ -64,7 +80,7 @@ public class Friend implements Serializable {
 
 	@Override
 	public String toString() {
-		 return toStringHelper(this).addValue(id)
+		 return toStringHelper(this)
 			        .addValue(email)
 			        .toString();
 	}
