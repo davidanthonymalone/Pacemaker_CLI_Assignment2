@@ -1,6 +1,14 @@
+r David Malone david@gmail.com secret
+r Ron Perlman ron@gmail.com secret
+r Brad Pitt brad@gmail.com secret
 lu
 l david@gmail.com secret
-aa running waterford 6
-aa swimming waterford 9
-aa Walking Waterford 5
-f  marge@simpson.com
+aa ball cwaterford 6
+aa awalking awaterford 9
+aa crunning bWaterford 5
+f brad@gmail.com
+l brad@gmail.com secret
+aa ball cwaterford 6
+aa awalking awaterford 9
+aa crunning bWaterford 5
+f  david@gmail.com
