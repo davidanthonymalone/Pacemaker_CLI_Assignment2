@@ -147,12 +147,14 @@ public class PacemakerConsoleService {
 	  Optional<User> user = Optional.fromNullable(paceApi.getUserByEmail(email));
 	  
 	  List<Friend> friends = (List<Friend>) paceApi.getFriends(lUser.get().id);
-	  console.println(user.get().email);
 	
-	  for (Friend friend : friends) {
-	        if (friend.getEmail().equals(email)) {
+	
+  for (Friend friend : friends) {
+	 
+       if (friend.getEmail().equals(email)) {
 	        	console.println("friend already followed");
-	        }else {
+        }else {
+        	 console.println("Inside the forloope");
 	        	paceApi.addFriend(loggedInUser.getId(),user.get().email,user.get().id);
 	  	      console.println("You have followed " + user.get().email);
 	        	
