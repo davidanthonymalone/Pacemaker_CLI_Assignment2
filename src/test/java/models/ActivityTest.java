@@ -1,4 +1,4 @@
-package controllers;
+package models;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -9,9 +9,14 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import controllers.PacemakerAPI;
 import models.Activity;
 import models.Location;
 import models.User;
+import models.Location;
+import static models.FixturesTest.locations;
+import java.util.List;
 import models.Location;
 import java.util.List;
 public class ActivityTest {
@@ -56,17 +61,17 @@ public class ActivityTest {
     assertEquals (locations.get(0), location);
   }
   
-//  @Test
-//  public void testCreateActivityWithMultipleLocation() {
-//    pacemaker.deleteActivities(homer.id);
-//    Activity activity = new Activity("walk", "shop", 2.5);
-//    Activity returnedActivity = pacemaker.createActivity(homer.id, activity.type, activity.location, activity.distance);
-//
-//    locations.forEach (location ->  pacemaker.addLocation(homer.id, returnedActivity.id, location.latitude, location.longitude));
-//    List<Location> returnedLocations = pacemaker.getLocations(homer.id, returnedActivity.id);
-//    assertEquals (locations.size(), returnedLocations.size());
-//    assertEquals(locations, returnedLocations);
-//  }
+  @Test
+  public void testCreateActivityWithMultipleLocation() {
+    pacemaker.deleteActivities(homer.id);
+    Activity activity = new Activity("walk", "shop", 2.5);
+    Activity returnedActivity = pacemaker.createActivity(homer.id, activity.type, activity.location, activity.distance);
+
+    locations.forEach (location ->  pacemaker.addLocation(homer.id, returnedActivity.id, location.latitude, location.longitude));
+    List<Location> returnedLocations = pacemaker.getLocations(homer.id, returnedActivity.id);
+    assertEquals (locations.size(), returnedLocations.size());
+    assertEquals(locations, returnedLocations);
+  }
   
   @Test
   public void testGetActivity() {

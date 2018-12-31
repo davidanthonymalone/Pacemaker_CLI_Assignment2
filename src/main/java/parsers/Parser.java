@@ -6,6 +6,7 @@ import java.util.List;
 import com.bethecoder.ascii_table.ASCIITable;
 import com.bethecoder.ascii_table.impl.CollectionASCIITableAware;
 import com.bethecoder.ascii_table.spec.IASCIITableAware;
+import com.google.common.base.Optional;
 
 import models.Activity;
 import models.Friend;
@@ -33,8 +34,10 @@ public class Parser {
   }
 
   public void renderActivities(Collection<Activity> activities) {
+	  
     System.out.println(activities.toString());
   }
+  
   
   
 
@@ -44,9 +47,10 @@ public class Parser {
 	    System.out.println(friends.toString());
 	  }
   
-  public void renderLocations(Activity a) {
-	  System.out.println(a.toString());
+  public void renderLocations(Optional<List<Location>> activity) {
+	  System.out.println(activity.toString());
   }
+  
   public void renderFriends(Friend friend) {
 	    System.out.println(friend.getEmail());
 	  }
